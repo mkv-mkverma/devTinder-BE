@@ -1,0 +1,38 @@
+# Dependencies (any folder)
+node_modules/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Caches
+.npm/
+.eslintcache
+.cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor (keep shared debug config)
+.vscode/*
+!.vscode/launch.json
+!.vscode/settings.json
+.idea/
