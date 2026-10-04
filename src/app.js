@@ -27,9 +27,9 @@ app.get("/", (req, res) => {
 
 // SIGN UP API - POST
 app.post("/signup", async (req, res) => {
-  const { firstName, lastName, email, password } = req.body ?? {};
+  const { firstName, lastName, email, password, age, gender } = req.body ?? {};
 
-  if (!firstName || !lastName || !email || !password) {
+  if (!firstName || !email || !password) {
     return res.status(400).json({
       message: "firstName, lastName, email, password is required",
     });
@@ -41,6 +41,8 @@ app.post("/signup", async (req, res) => {
     lastName,
     email,
     password,
+    age,
+    gender,
   });
 
   try {
@@ -130,9 +132,9 @@ app.delete("/user", async (req, res) => {
 // update - patch
 // findByIdAndUpdate(id, update, options)
 
-app.patch("/user", async (req, res) => {
-  const { userId } = req.body;
-  const update  = req.body;
+app.patch("/user/:userID", async (req, res) => {
+  const userId = req.params?.userID;
+  const update = req.body;
 
   if (!userId || !update) {
     return res.status(400).json({
@@ -141,6 +143,23 @@ app.patch("/user", async (req, res) => {
   }
 
   try {
+    const ALLOWED_UPDATE = ["photoUrl", "about", "age", "gender", "skills"];
+
+    const isAllowedUpdate = Object.keys(update).every((k) =>
+      ALLOWED_UPDATE.includes(k),
+    );
+
+    if (!isAllowedUpdate) {
+      return res.status(400).json({
+        message: "Update is not allowed",
+      });
+    }
+
+    if (update?.skills.length >= 5) {
+      return res.status(400).json({
+        message: "Skill cannot be more than 5",
+      });
+    }
     const user = await User.findByIdAndUpdate(userId, update, {
       new: true, // return the updated document instead of the old one
       runValidators: true, // apply schema validations on update
