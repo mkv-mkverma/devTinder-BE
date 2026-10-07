@@ -10,15 +10,17 @@ const userSchema = new mongoose.Schema(
       trim: true,
       minLength: 3,
       maxLength: 50,
+      index: true, // boolean, weather to define index on this property,(firstName cannot be unique in DB)
     },
     lastName: {
       type: String,
       trim: true,
+      required: true,
     },
     emailId: {
       type: String,
       required: true,
-      unique: true,
+      unique: true, // boolean, weather to define unique index on this property
       trim: true,
       lowercase: true,
       validate: function (value) {

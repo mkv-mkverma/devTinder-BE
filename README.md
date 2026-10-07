@@ -115,6 +115,46 @@ const {email, password} = req.body ?? {}
 }
 ```
 
+#mongoose shema
+
+```
+import mongoose from "mongoose";
+
+const userSchema = mongoose.Schema(
+  {
+    email: {
+      type: String, // Number, [String]
+      reduired: true,
+      minLength: 4, // max: 2
+      trim: true,
+      unique: true,
+      lowercase: true,
+      default: "manish@gmail.com",
+      validate: function (value) {
+        // validator.isStrongPassword(value)
+        // validator.isURL(value)
+        if (!validator.isEmail(value)) {
+          throw new Error("Invalid");
+        }
+      },
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+userSchema.methods.validatePassword = async function (passwordInputByUser) {
+  const user = this;
+  const passwordHashed = user.password;
+  isPasswordValid = await bcrypt.compare(passwordInputByUser, passwordHashed);
+};
+
+const User = new mongoose.model("User", userSchema);
+export default User;
+
+```
+
 #db connection
 
 #middleware

@@ -1,4 +1,5 @@
 import validator from "validator";
+
 const validateSignUpData = (req) => {
   const { firstName, lastName, emailId, password } = req.body ?? {};
 

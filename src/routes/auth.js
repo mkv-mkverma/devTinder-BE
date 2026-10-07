@@ -22,7 +22,9 @@ authRouter.post("/auth/signup", async (req, res) => {
       emailId,
       password: passwordHash,
     });
+
     await UserModel.save();
+
     res.status(200).json({
       message: "User create successfully",
     });
